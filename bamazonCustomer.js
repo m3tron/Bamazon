@@ -2,6 +2,7 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 var Table = require("cli-table3");
 
+//Create connection to database
 var connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -10,6 +11,7 @@ var connection = mysql.createConnection({
   port: 3306
 });
 
+//Connect to database
 connection.connect(function(err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
@@ -17,6 +19,7 @@ connection.connect(function(err) {
 
 var itemArray = [];
 
+//Displays cli table of items availble
 function displayItems() {
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) {
@@ -35,6 +38,7 @@ function displayItems() {
   });
 }
 
+//Receives input from user about item and quantity they would like to purchase
 function main(res) {
   inquirer
     .prompt([
@@ -50,20 +54,27 @@ function main(res) {
       }
     ])
     .then(function(ans) {
+      //Check to see if item id exists in database
       /*   if (itemArray.indexOf(ans.purchasedItem) = -1) {
         console.log("Invalid Choice! Please try again.");
         displayItems();
-      } else { */
+      } else { }*/
+
+      //Receives information about the selected item
       connection.query(
         "SELECT * FROM products WHERE item_id = ?",
         ans.purchasedItem,
         function(err, results) {
           if (err) throw err;
+
+          //Checks if store has enough quantity to accept order
           if (ans.purchasedQuantity > results[0].stock_quantity) {
             console.log("Insufficient quantity!");
             main(res);
           } else if (results[0].stock_quantity - ans.purchasedQuantity > 0) {
             var quant = results[0].stock_quantity - ans.purchasedQuantity;
+
+            //Updates database by reducing the remaining quantity by the purchased quantity
             connection.query(
               "UPDATE products SET stock_quantity = ? WHERE item_id = ?",
               [quant, ans.purchasedItem],
@@ -76,6 +87,7 @@ function main(res) {
                     2
                   )}`
                 );
+                //Closes connection with database
                 connection.end();
               }
             );
