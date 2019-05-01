@@ -23,8 +23,10 @@ If quantity requested exceeds quantity on stock, you will be asked to retry.
 ### Manager
 
 Run **_node bamazonManager.js_** in terminal.
+![](screenshots/man1.PNG)
 
 You will then be prompted to pick one of the following options:
+![](screenshots/man2.PNG)
 
 1. View Products for Sale
    Select this option to see a list of products available for sale.
