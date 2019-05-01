@@ -40,7 +40,9 @@ You will then be prompted to pick one of the following options:
    ![](screenshots/man7.PNG)
 4. Add New Product
    Select this to add a new product. You will be asked the product name, department name it belongs to, price, and quantity you have to sell.
+
    ![](screenshots/man8.PNG)
    ![](screenshots/man9.PNG)
+
 5. Quit
    Select this to quit.
